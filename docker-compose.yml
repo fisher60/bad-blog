@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - bad_blog_postgres:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    ports:
+      - "5432"
+
+  backend:
+    build:
+      target: backend
+    ports:
+      - "8011:8011"
+    depends_on:
+      - db
+    environment:
+      - POSTGRES_DB=db
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+    restart: "no"
+
+volumes:
+  bad_blog_postgres:
